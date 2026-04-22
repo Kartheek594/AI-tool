@@ -1,32 +1,16 @@
 from flask import Flask, request, jsonify
-from openai import OpenAI
-from flask_cors import CORS
 
-app = Flask(__name__)   # ✅ create app first
-CORS(app)               # ✅ then enable CORS
+app = Flask(__name__)
 
-client = OpenAI(api_key="YOUR_API_KEY")  # 🔑 put your key here
-
-@app.route("/check", methods=["POST"])
+@app.route('/check', methods=['POST'])
 def check():
-    data = request.json
-    question = data["question"]
-    option = data["option"]
-
-    prompt = f"""
-    Question: {question}
-    Option: {option}
-    Is this option correct? Answer only YES or NO.
-    """
-
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}]
-    )
-
-    answer = response.choices[0].message.content
-
-    if "YES" in answer.upper():
+    data = request.get_json()
+    
+    question = data.get("question")
+    option = data.get("option")
+    
+    # Simple logic (replace with your AI logic)
+    if "correct" in option.lower():
         return jsonify({"status": "correct"})
     else:
         return jsonify({"status": "wrong"})
