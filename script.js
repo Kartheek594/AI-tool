@@ -1,3 +1,4 @@
+console.log("JS Loaded");
 const options = document.querySelectorAll(".option");
 const question = document.getElementById("question").innerText;
 
